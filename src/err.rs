@@ -42,3 +42,12 @@ impl From<std::io::Error> for AppError {
         }
     }
 }
+
+impl From<reqwest::Error> for AppError {
+    fn from(err: reqwest::Error) -> Self {
+        Self {
+            error_type: ErrorType::NetworkError,
+            source: Box::new(err),
+        }
+    }
+}
