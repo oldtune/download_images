@@ -4,7 +4,8 @@ use err::Result;
 use std::io::BufRead;
 use std::ops::Deref;
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     //read -> parse urls -> map to buffers -> save -> update console ui
     let path = "~/Desktop/links.txt";
     let files_url = read_file_content(path).map(|content| file_content_to_links(content))?;
