@@ -1,7 +1,5 @@
-use reqwest::Request;
-
 pub use crate::err::Result;
-
+use reqwest::Request;
 //https://i.imgur.com/tvMbFww.jpeg
 pub struct Downloader {
     http_client: reqwest::Client,
@@ -15,12 +13,17 @@ impl Downloader {
     }
 
     pub async fn download_multiple_file(&self, links: &Vec<String>) -> Result<()> {
-        let result: Vec<Result<()>> = links.iter().map(|f| self.download_single_file(f)).collect();
+        // let result: Vec<Box<dyn Future<Output = Result<()>>>> = links
+        //     .iter()
+        //     .map(|link| Box::new(self.download_single_file(link)) as Box<dyn Future<Output = _>>)
+        //     .collect();
         Ok(())
     }
 
-    async fn download_single_file(&self, link: &String) -> Result<()> {
-        self.http_client.get(link).send().await?;
-        Ok(())
+    pub async fn download_single_file(&self, link: &String) -> Result<Vec<u8>> {
+        let httpResult = self.http_client.get(link).send().await?;
+        let bytes = httpResult.bytes().await?;
+        let vec_bytes = bytes.to_vec();
+        Ok(vec_bytes)
     }
 }
