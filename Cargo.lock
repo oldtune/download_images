@@ -65,6 +65,7 @@ name = "download-images"
 version = "0.1.0"
 dependencies = [
  "bytes",
+ "log",
  "reqwest",
  "tokio",
 ]

@@ -9,3 +9,4 @@ edition = "2021"
 reqwest = "0.11.11"
 tokio = { version = "1.19.2", features = ["full"] }
 bytes = "1.1.0"
+log = { version = "0.4.17", features = ["std"] }

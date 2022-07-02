@@ -4,7 +4,7 @@ pub use crate::err::Result;
 use bytes::Bytes;
 // use bytes::Bytes
 use reqwest::Request;
-//https://i.imgur.com/tvMbFww.jpeg
+use tokio::task::futures;
 pub struct Downloader {
     http_client: reqwest::Client,
 }
@@ -17,10 +17,21 @@ impl Downloader {
     }
 
     pub async fn download_multiple_file(&self, links: &Vec<String>) -> Result<Vec<Bytes>> {
-        // let futures: Vec<dyn Future<Output = Result<Bytes>>> = links
-        //     .iter()
-        //     .map(|link| self.download_single_file(link))
-        //     .collect();
+        let mut handles = Vec::with_capacity(links.len());
+
+        for link in links{
+            handles.push(tokio::spawn(self.download_single_file(links)));
+        }
+
+        let mut results = Vec::with_capacity(links.len());
+        for handle  in handles{
+            results.push(handle.await?);
+        }
+
+        Ok(results)
+
+
+        // for future in futures {}
         todo!()
     }
 

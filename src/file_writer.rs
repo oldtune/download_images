@@ -1,5 +1,4 @@
 use crate::err::Result;
-use std::path::PathBuf;
 
 use bytes::Bytes;
 pub struct FileWriter {}

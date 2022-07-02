@@ -51,3 +51,12 @@ impl From<reqwest::Error> for AppError {
         }
     }
 }
+
+impl From<log::SetLoggerError> for AppError {
+    fn from(err: log::SetLoggerError) -> Self {
+        Self {
+            error_type: ErrorType::UnexpectedError,
+            source: Box::new(err),
+        }
+    }
+}
