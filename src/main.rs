@@ -2,29 +2,26 @@ mod download;
 mod err;
 use download::Downloader;
 use err::Result;
+use file_reader::FileReader;
+use file_writer::FileWriter;
 use std::io::BufRead;
 use std::ops::Deref;
+mod file_reader;
+mod file_writer;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    //read -> parse urls -> map to buffers -> save -> update console ui
-    // let path = "~/Desktop/links.txt";
-    // let files_url = read_file_content(path).map(|content| file_content_to_links(content))?;
+    let file_reader = FileReader::new("");
+    let links = file_reader.read().await?;
 
-    let download = Downloader::new();
-    let link = "https://c.neh.tw/thumb/f/720/comhiclipartdatah.jpg".to_string();
-    let result = download.download_single_file(&link).await.unwrap();
-    std::fs::write("./img.png", result);
+    let downloader = Downloader::new();
+    let files = downloader.download_multiple_file(&links).await?;
+
+    let file_writer = FileWriter {};
+
+    for file in files {
+        file_writer.write_file("", file).await?;
+    }
+
     Ok(())
-}
-
-fn read_file_content(path: &str) -> Result<String> {
-    let file_content = std::fs::read_to_string(path)?;
-    Ok(file_content)
-}
-
-fn file_content_to_links(content: String) -> Vec<String> {
-    let splits = content.split("\r\n");
-
-    splits.map(|str| str.to_string()).collect()
 }

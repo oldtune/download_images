@@ -1,4 +1,8 @@
+use std::future::Future;
+
 pub use crate::err::Result;
+use bytes::Bytes;
+// use bytes::Bytes
 use reqwest::Request;
 //https://i.imgur.com/tvMbFww.jpeg
 pub struct Downloader {
@@ -12,18 +16,18 @@ impl Downloader {
         }
     }
 
-    pub async fn download_multiple_file(&self, links: &Vec<String>) -> Result<()> {
-        // let result: Vec<Box<dyn Future<Output = Result<()>>>> = links
+    pub async fn download_multiple_file(&self, links: &Vec<String>) -> Result<Vec<Bytes>> {
+        // let futures: Vec<dyn Future<Output = Result<Bytes>>> = links
         //     .iter()
-        //     .map(|link| Box::new(self.download_single_file(link)) as Box<dyn Future<Output = _>>)
+        //     .map(|link| self.download_single_file(link))
         //     .collect();
-        Ok(())
+        todo!()
     }
 
-    pub async fn download_single_file(&self, link: &String) -> Result<Vec<u8>> {
-        let httpResult = self.http_client.get(link).send().await?;
-        let bytes = httpResult.bytes().await?;
-        let vec_bytes = bytes.to_vec();
-        Ok(vec_bytes)
+    pub async fn download_single_file(&self, link: &String) -> Result<Bytes> {
+        // let http_result = self.http_client.get(link).send().await?;
+        // let bytes = http_result.bytes().await?;
+        // Ok(bytes)
+        todo!()
     }
 }
